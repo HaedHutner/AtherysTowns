@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     shadow 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
-    shadow 'com.github.Atherys-Horizons:AtherysCore:master-SNAPSHOT'
+    shadow 'com.github.Atherys-Horizons:AtherysCore:db-refactor-SNAPSHOT'
 
     compile   'math.geom2d:javaGeom:0.11.1'
 }
