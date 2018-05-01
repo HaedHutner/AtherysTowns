@@ -206,7 +206,8 @@ public final class TownsConfig extends PluginConfig {
                     NationActions.SET_DESCRIPTION,
                     NationActions.SET_NAME,
                     NationActions.SET_RANK,
-                    NationActions.SET_LEADER_TITLE
+                    NationActions.SET_LEADER_TITLE,
+                    NationActions.SET_TAX_RATE
             );
 
         }
@@ -273,7 +274,6 @@ public final class TownsConfig extends PluginConfig {
 
     @Setting( "switch_flag_blocks" )
     public List<BlockType> SWITCH_FLAG_BLOCKS = new ArrayList<>();
-
     {
         SWITCH_FLAG_BLOCKS.add( BlockTypes.CHEST );
         SWITCH_FLAG_BLOCKS.add( BlockTypes.ENDER_CHEST );

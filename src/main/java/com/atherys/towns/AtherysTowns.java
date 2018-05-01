@@ -1,6 +1,5 @@
 package com.atherys.towns;
 
-import com.atherys.towns.commands.TownsValues;
 import com.atherys.towns.commands.nation.NationMasterCommand;
 import com.atherys.towns.commands.plot.PlotMasterCommand;
 import com.atherys.towns.commands.resident.ResidentCommand;
@@ -21,12 +20,10 @@ import com.atherys.towns.plot.flags.Extent;
 import com.atherys.towns.plot.flags.ExtentRegistry;
 import com.atherys.towns.plot.flags.Flag;
 import com.atherys.towns.plot.flags.FlagRegistry;
-import com.atherys.towns.resident.Resident;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -39,7 +36,6 @@ import org.spongepowered.api.service.permission.PermissionService;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static com.atherys.towns.AtherysTowns.*;
 
@@ -138,23 +134,6 @@ public class AtherysTowns {
         Sponge.getCommandManager().register( AtherysTowns.getInstance(), TownMasterCommand.getInstance().getSpec(), "town", "t" );
         Sponge.getCommandManager().register( AtherysTowns.getInstance(), NationMasterCommand.getInstance().getSpec(), "nation", "n" );
         WildernessRegenCommand.getInstance().register();
-
-        townBorderTask = Task.builder()
-                .interval( getConfig().TOWN.BORDER_UPDATE_RATE, TimeUnit.SECONDS )
-                .execute( () -> {
-                    for ( Player p : Sponge.getServer().getOnlinePlayers() ) {
-                        if ( TownsValues.get( p.getUniqueId(), TownsValues.TownsKey.TOWN_BORDERS ).isPresent() ) {
-                            Optional<Resident> resOpt = ResidentManager.getInstance().get( p.getUniqueId() );
-                            if ( resOpt.isPresent() ) {
-                                if ( resOpt.get().getTown().isPresent() ) {
-                                    resOpt.get().getTown().get().showBorders( p );
-                                }
-                            }
-                        }
-                    }
-                } )
-                .name( "atherystowns-town-border-task" )
-                .submit( this );
     }
 
     private void stop () {

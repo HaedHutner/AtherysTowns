@@ -51,6 +51,7 @@ public class NationView implements View<Nation> {
                 .append( Text.of( TextColors.RESET, decoration, " ].______.o0o.\n", TextColors.RESET ) )
                 .append( Text.of( TextColors.RESET, primary, TextStyles.BOLD, "Description: ", TextStyles.RESET, textColor, nation.getDescription(), "\n" ) )
                 .append( Text.of( TextColors.RESET, primary, TextStyles.BOLD, "Bank: ", TextStyles.RESET, textColor, FormatUtils.getFormattedBank( nation ), "\n" ) )
+                .append( Text.of( TextColors.RESET, primary, TextStyles.BOLD, "Tax Rate: ", TextStyles.RESET, textColor, nation.getTax() ) )
                 .append( Text.of( TextColors.RESET, primary, TextStyles.BOLD, nation.getLeaderTitle(), ": ", TextStyles.RESET, textColor, leaderName + "\n" ) )
                 .append( Text.of( TextColors.RESET, primary, TextStyles.BOLD, "Towns[", textColor, towns.size(), primary, "]: ", TextStyles.RESET, TextColors.RESET, getFormattedTowns( towns ) ) )
                 .build();

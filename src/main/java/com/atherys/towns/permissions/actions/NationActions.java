@@ -14,6 +14,8 @@ public final class NationActions {
 
     public static final NationAction SET_LEADER_TITLE = new NationAction( "set_leader_title", "Set Leader Title", "atherystowns.actions.nation.set.leader_title" );
 
+    public static final NationAction SET_TAX_RATE = new NationAction( "set_tax_rate", "Set Tax Rate", "atherystowns.actions.nation.set.tax" );
+
     public static final NationAction NATION_WITHDRAW = new NationAction( "nation_withdraw", "Nation Withdraw", "atherystowns.actions.nation.withdraw" );
 
     public static final NationAction NATION_DEPOSIT = new NationAction( "nation_deposit", "Nation Deposit", "atherystowns.actions.nation.deposit" );

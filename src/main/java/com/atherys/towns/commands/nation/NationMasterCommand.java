@@ -21,6 +21,7 @@ public class NationMasterCommand extends TownsMasterCommand {
         addChild( NationInfoCommand.getInstance().getSpec(), "info" );
         addChild( NationDepositCommand.getInstance().getSpec(), "deposit" );
         addChild( NationWithdrawCommand.getInstance().getSpec(), "withdraw" );
+        addChild( NationSetTaxRateCommand.getInstance().getSpec(), "tax" );
     }
 
     @Override

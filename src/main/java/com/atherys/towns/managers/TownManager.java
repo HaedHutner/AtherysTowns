@@ -1,15 +1,19 @@
 package com.atherys.towns.managers;
 
 import com.atherys.towns.AtherysTowns;
+import com.atherys.towns.commands.TownsValues;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.plot.PlotFlags;
 import com.atherys.towns.plot.flags.*;
+import com.atherys.towns.resident.Resident;
 import com.atherys.towns.town.Town;
 import com.atherys.towns.town.TownBuilder;
 import com.atherys.towns.town.TownStatus;
 import com.atherys.towns.utils.DbUtils;
 import org.bson.Document;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
@@ -18,13 +22,34 @@ import org.spongepowered.api.world.World;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static com.atherys.towns.AtherysTowns.getConfig;
 
 public final class TownManager extends AreaObjectManager<Town> {
 
     private static TownManager instance = new TownManager();
+    private final Task townBorderTask;
 
     private TownManager () {
         super( "towns" );
+
+        townBorderTask = Task.builder()
+                .interval( getConfig().TOWN.BORDER_UPDATE_RATE, TimeUnit.SECONDS )
+                .execute( () -> {
+                    for ( Player p : Sponge.getServer().getOnlinePlayers() ) {
+                        if ( TownsValues.get( p.getUniqueId(), TownsValues.TownsKey.TOWN_BORDERS ).isPresent() ) {
+                            Optional<Resident> resOpt = ResidentManager.getInstance().get( p.getUniqueId() );
+                            if ( resOpt.isPresent() ) {
+                                if ( resOpt.get().getTown().isPresent() ) {
+                                    resOpt.get().getTown().get().showBorders( p );
+                                }
+                            }
+                        }
+                    }
+                } )
+                .name( "atherystowns-town-border-task" )
+                .submit( this );
     }
 
     @Override
@@ -94,5 +119,9 @@ public final class TownManager extends AreaObjectManager<Town> {
 
     public static TownManager getInstance () {
         return instance;
+    }
+
+    public Task getTownBorderTask() {
+        return townBorderTask;
     }
 }

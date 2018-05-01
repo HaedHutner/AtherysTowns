@@ -27,6 +27,7 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
     private String leaderTitle = "Leader";
     private TextColor color = TextColors.WHITE;
     private String description = "";
+
     private double tax = 0.0;
 
     // TODO: Allies & Enemies
@@ -138,6 +139,12 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
 
     public List<Town> getTowns () {
         return TownManager.getInstance().getByParent( this );
+    }
+
+    public void tax() {
+        getTowns().forEach( town -> {
+            town.tax( this.getTax() );
+        } );
     }
 
     public double getTax () {

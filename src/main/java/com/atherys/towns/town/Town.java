@@ -2,6 +2,7 @@ package com.atherys.towns.town;
 
 import com.atherys.core.views.Viewable;
 import com.atherys.towns.AtherysTowns;
+import com.atherys.towns.TownsConfig;
 import com.atherys.towns.base.AbstractAreaObject;
 import com.atherys.towns.managers.PlotManager;
 import com.atherys.towns.managers.ResidentManager;
@@ -169,6 +170,12 @@ public class Town extends AbstractAreaObject<Nation> implements Viewable<TownVie
 
     public void setStatus ( TownStatus status ) {
         this.status = status;
+    }
+
+    public void tax( double tax ) {
+        getBank().ifPresent( bank -> bank.withdraw(
+
+        ) );
     }
 
     public void claimPlot ( Plot p ) {
