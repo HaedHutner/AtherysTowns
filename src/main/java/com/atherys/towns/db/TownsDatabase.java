@@ -1,21 +1,26 @@
 package com.atherys.towns.db;
 
-import com.atherys.core.database.mongo.AbstractMongoDatabase;
-import com.atherys.towns.AtherysTowns;
+import com.atherys.towns.managers.*;
 
 /**
- * A simple implementation of AbstractMongoDatabase designed for the AtherysTowns plugin
+ * Represents a common place to store all database-related manager objects.
+ * Is responsible for initializing the connection to the database, and properly initializing all managers.
+ * Is also responsible for properly stopping all managers, and ceasing the connection to the database.
  */
-public class TownsDatabase extends AbstractMongoDatabase {
+public interface TownsDatabase {
 
-    private static TownsDatabase instance = new TownsDatabase();
+    NationManager getNationManager();
 
-    private TownsDatabase () {
-        super( AtherysTowns.getConfig().DATABASE );
-    }
+    TownManager getTownManager();
 
-    public static TownsDatabase getInstance () {
-        return instance;
-    }
+    PlotManager getPlotManager();
+
+    ResidentManager getResidentManager();
+
+    WildernessManager getWildernessManager();
+
+    void init();
+
+    void stop();
 
 }

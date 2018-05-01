@@ -2,7 +2,6 @@ package com.atherys.towns.commands.town;
 
 import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.NationManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.actions.TownActions;
@@ -61,7 +60,7 @@ public class TownCreateCommand extends TownsSimpleCommand {
         }
 
         if ( define.isPresent() ) {
-            Optional<Nation> n = NationManager.getInstance().getFirstByName( args.<String>getOne( "nation" ).orElse( UUID.randomUUID().toString() ) );
+            Optional<Nation> n = AtherysTowns.getNationManager().getFirstByName( args.<String>getOne( "nation" ).orElse( UUID.randomUUID().toString() ) );
             Town t = Town.create( define.get(), resident, args.<String>getOne( Text.of( "townName" ) ).orElse( player.getName() + "'s Town" ), AtherysTowns.getConfig().TOWN.INITIAL_AREA );
             if ( n.isPresent() ) t.setParent( n.get() );
             else TownMessage.warn( player, "The nation you specified was invalid. Town was not added to a nation." );

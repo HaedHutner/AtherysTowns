@@ -3,7 +3,6 @@ package com.atherys.towns.commands.town;
 import com.atherys.core.utils.Question;
 import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.ResidentManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.actions.TownActions;
@@ -42,7 +41,7 @@ public class TownInviteCommand extends TownsSimpleCommand {
         }
 
         Player p = invitedPlayer.get();
-        Optional<Resident> otherRes = ResidentManager.getInstance().get( p.getUniqueId() );
+        Optional<Resident> otherRes = AtherysTowns.getResidentManager().get( p.getUniqueId() );
 
         if ( otherRes.isPresent() ) {
 

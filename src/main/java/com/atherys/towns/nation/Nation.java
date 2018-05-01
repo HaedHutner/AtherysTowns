@@ -1,10 +1,8 @@
 package com.atherys.towns.nation;
 
 import com.atherys.core.views.Viewable;
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.base.AbstractAreaObject;
-import com.atherys.towns.managers.NationManager;
-import com.atherys.towns.managers.ResidentManager;
-import com.atherys.towns.managers.TownManager;
 import com.atherys.towns.permissions.ranks.NationRanks;
 import com.atherys.towns.resident.Resident;
 import com.atherys.towns.town.Town;
@@ -29,7 +27,7 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
     private String description = "";
     private double tax = 0.0;
 
-    // TODO: Allies & Enemies
+    // TODO: Allies & Enemies?
 
     protected Nation ( UUID uuid ) {
         super( uuid );
@@ -39,7 +37,7 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
         super( uuid );
         this.name = name;
         this.description = description;
-        NationManager.getInstance().add( this );
+        AtherysTowns.getNationManager().add( this );
     }
 
     private Nation ( String name, Town capital ) {
@@ -50,8 +48,8 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
         capital.setStatus( TownStatus.CAPITAL );
         capital.getMayor().ifPresent( resident -> resident.setNationRank( NationRanks.LEADER ) );
 
-        NationManager.getInstance().add( this );
-        NationManager.getInstance().save( this );
+        AtherysTowns.getNationManager().add( this );
+        AtherysTowns.getNationManager().save( this );
     }
 
     public static Nation create ( UUID uuid, String name, String description ) {
@@ -133,11 +131,11 @@ public class Nation extends AbstractAreaObject<Nation> implements Viewable<Natio
     }
 
     public List<Resident> getResidents () {
-        return ResidentManager.getInstance().getByNation( this );
+        return AtherysTowns.getResidentManager().getByNation( this );
     }
 
     public List<Town> getTowns () {
-        return TownManager.getInstance().getByParent( this );
+        return AtherysTowns.getTownManager().getByParent( this );
     }
 
     public double getTax () {

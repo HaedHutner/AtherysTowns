@@ -1,6 +1,6 @@
 package com.atherys.towns.town;
 
-import com.atherys.towns.managers.TownManager;
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.plot.PlotFlags;
 import org.spongepowered.api.text.format.TextColor;
@@ -72,7 +72,7 @@ public class TownBuilder {
     }
 
     public Town build () {
-        TownManager.getInstance().add( town );
+        AtherysTowns.getTownManager().add( town );
         return town;
     }
 

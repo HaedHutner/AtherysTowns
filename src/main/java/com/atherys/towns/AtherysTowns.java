@@ -1,5 +1,6 @@
 package com.atherys.towns;
 
+import com.atherys.core.database.config.DatabaseTypes;
 import com.atherys.towns.commands.TownsValues;
 import com.atherys.towns.commands.nation.NationMasterCommand;
 import com.atherys.towns.commands.plot.PlotMasterCommand;
@@ -7,6 +8,8 @@ import com.atherys.towns.commands.resident.ResidentCommand;
 import com.atherys.towns.commands.town.TownMasterCommand;
 import com.atherys.towns.commands.wilderness.WildernessRegenCommand;
 import com.atherys.towns.db.TownsDatabase;
+import com.atherys.towns.db.mongo.MongoTownsDatabase;
+import com.atherys.towns.db.sql.SQLTownsDatabase;
 import com.atherys.towns.listeners.PlayerListeners;
 import com.atherys.towns.managers.*;
 import com.atherys.towns.permissions.actions.NationAction;
@@ -66,7 +69,6 @@ public class AtherysTowns {
     private static boolean init = false;
 
     private TownsConfig config;
-    private TownsDatabase database;
 
     private String workingDir = "config/" + ID + "/";
 
@@ -74,6 +76,8 @@ public class AtherysTowns {
     private Task wildernessRegenTask;
 
     private PermissionService permissionService;
+
+    private TownsDatabase database;
 
     private void init () {
         instance = this;
@@ -114,22 +118,18 @@ public class AtherysTowns {
         game.getRegistry().registerModule( NationRank.class, NationRankRegistry.getInstance() );
         game.getRegistry().registerModule( TownRank.class, TownRankRegistry.getInstance() );
 
-        database = TownsDatabase.getInstance();
+        if ( config.DATABASE.TYPE.equals( DatabaseTypes.MONGODB ) ) {
+            database = MongoTownsDatabase.getInstance();
+        } else {
+            database = SQLTownsDatabase.getInstance();
+        }
 
         init = true;
     }
 
     private void start () {
 
-        WildernessManager.getInstance().init();
-
-        NationManager.getInstance().loadAll();
-
-        TownManager.getInstance().loadAll();
-
-        PlotManager.getInstance().loadAll();
-
-        ResidentManager.getInstance().loadAll();
+        database.init();
 
         game.getEventManager().registerListeners( this, new PlayerListeners() );
 
@@ -144,7 +144,7 @@ public class AtherysTowns {
                 .execute( () -> {
                     for ( Player p : Sponge.getServer().getOnlinePlayers() ) {
                         if ( TownsValues.get( p.getUniqueId(), TownsValues.TownsKey.TOWN_BORDERS ).isPresent() ) {
-                            Optional<Resident> resOpt = ResidentManager.getInstance().get( p.getUniqueId() );
+                            Optional<Resident> resOpt = AtherysTowns.getResidentManager().get( p.getUniqueId() );
                             if ( resOpt.isPresent() ) {
                                 if ( resOpt.get().getTown().isPresent() ) {
                                     resOpt.get().getTown().get().showBorders( p );
@@ -158,10 +158,7 @@ public class AtherysTowns {
     }
 
     private void stop () {
-        ResidentManager.getInstance().saveAll( ResidentManager.getInstance().getAll() );
-        PlotManager.getInstance().saveAll( PlotManager.getInstance().getAll() );
-        TownManager.getInstance().saveAll( TownManager.getInstance().getAll() );
-        NationManager.getInstance().saveAll( NationManager.getInstance().getAll() );
+        database.stop();
     }
 
     @Listener
@@ -207,7 +204,24 @@ public class AtherysTowns {
         return AtherysTowns.getInstance().config;
     }
 
-    public static TownsDatabase getDatabase () {
-        return getInstance().database;
+    public static NationManager getNationManager() {
+        return getInstance().database.getNationManager();
     }
+
+    public static TownManager getTownManager() {
+        return getInstance().database.getTownManager();
+    }
+
+    public static PlotManager getPlotManager() {
+        return getInstance().database.getPlotManager();
+    }
+
+    public static ResidentManager getResidentManager() {
+        return getInstance().database.getResidentManager();
+    }
+
+    public static WildernessManager getWildernessManager() {
+        return getInstance().database.getWildernessManager();
+    }
+
 }

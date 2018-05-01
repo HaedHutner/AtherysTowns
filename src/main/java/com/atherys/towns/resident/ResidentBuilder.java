@@ -1,6 +1,6 @@
 package com.atherys.towns.resident;
 
-import com.atherys.towns.managers.ResidentManager;
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.permissions.ranks.NationRank;
 import com.atherys.towns.permissions.ranks.TownRank;
 import com.atherys.towns.town.Town;
@@ -44,7 +44,7 @@ public class ResidentBuilder {
     }
 
     public Resident build () {
-        ResidentManager.getInstance().save( res );
+        AtherysTowns.getResidentManager().save( res );
         res.updatePermissions();
         return res;
     }

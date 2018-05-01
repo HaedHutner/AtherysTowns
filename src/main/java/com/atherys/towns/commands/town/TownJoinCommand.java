@@ -1,7 +1,7 @@
 package com.atherys.towns.commands.town;
 
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.TownManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.actions.TownActions;
@@ -30,7 +30,7 @@ public class TownJoinCommand extends TownsSimpleCommand {
 
     @Override
     protected CommandResult execute ( Player player, CommandContext args, Resident resident, @Nullable Town town, @Nullable Nation nation ) {
-        Optional<Town> tOpt = TownManager.getInstance().getFirstByName( args.<String>getOne( "townName" ).orElse( UUID.randomUUID().toString() ) );
+        Optional<Town> tOpt = AtherysTowns.getTownManager().getFirstByName( args.<String>getOne( "townName" ).orElse( UUID.randomUUID().toString() ) );
 
         if ( !tOpt.isPresent() ) {
             TownMessage.warn( player, "That town doesn't exist!" );

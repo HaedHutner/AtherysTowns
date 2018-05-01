@@ -1,7 +1,7 @@
 package com.atherys.towns.commands.nation;
 
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.NationManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.resident.Resident;
@@ -35,7 +35,7 @@ public class NationInfoCommand extends TownsSimpleCommand {
 
         if ( nationName.equals( "None" ) ) return CommandResult.success();
 
-        Optional<Nation> nationOptional = NationManager.getInstance().getFirstByName( nationName );
+        Optional<Nation> nationOptional = AtherysTowns.getNationManager().getFirstByName( nationName );
 
         if ( nationOptional.isPresent() ) {
             nationOptional.get().createView().show( player );

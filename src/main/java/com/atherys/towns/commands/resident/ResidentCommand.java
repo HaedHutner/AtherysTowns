@@ -1,7 +1,6 @@
 package com.atherys.towns.commands.resident;
 
 import com.atherys.towns.AtherysTowns;
-import com.atherys.towns.managers.ResidentManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.resident.Resident;
 import org.spongepowered.api.command.CommandException;
@@ -39,7 +38,7 @@ public class ResidentCommand implements CommandExecutor {
             Optional<User> user = args.getOne( Text.of( "player" ) );
             if ( user.isPresent() ) {
                 System.out.println( user.get().getUniqueId().toString() );
-                Optional<Resident> res = ResidentManager.getInstance().get( user.get().getUniqueId() );
+                Optional<Resident> res = AtherysTowns.getResidentManager().get( user.get().getUniqueId() );
                 if ( res.isPresent() ) {
                     res.get().createView().show( (Player) src );
                 } else {
@@ -49,7 +48,7 @@ public class ResidentCommand implements CommandExecutor {
             }
         } else {
             // get own resident
-            Optional<Resident> res = ResidentManager.getInstance().get( ( (Player) src ).getUniqueId() );
+            Optional<Resident> res = AtherysTowns.getResidentManager().get( ( (Player) src ).getUniqueId() );
             // send src resident info
             res.ifPresent( resident -> resident.createView().show( (Player) src ) );
         }

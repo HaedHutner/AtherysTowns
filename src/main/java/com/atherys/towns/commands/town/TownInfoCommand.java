@@ -1,7 +1,7 @@
 package com.atherys.towns.commands.town;
 
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.TownManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.resident.Resident;
@@ -46,10 +46,10 @@ public class TownInfoCommand extends TownsSimpleCommand {
 
             if ( townName.get().equalsIgnoreCase( "here" ) ) {
                 error = Text.of( "You are in the wilderness." );
-                tOpt = TownManager.getInstance().getByLocation( player.getLocation() );
+                tOpt = AtherysTowns.getTownManager().getByLocation( player.getLocation() );
             } else {
                 error = Text.of( "No such town exists." );
-                tOpt = TownManager.getInstance().getFirstByName( townName.get() );
+                tOpt = AtherysTowns.getTownManager().getFirstByName( townName.get() );
             }
 
             if ( tOpt.isPresent() ) {

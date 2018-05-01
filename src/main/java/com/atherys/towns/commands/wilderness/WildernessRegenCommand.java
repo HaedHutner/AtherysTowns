@@ -1,7 +1,6 @@
 package com.atherys.towns.commands.wilderness;
 
 import com.atherys.towns.AtherysTowns;
-import com.atherys.towns.managers.WildernessManager;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.spec.CommandExecutor;
@@ -14,7 +13,7 @@ public class WildernessRegenCommand {
 
     private static CommandExecutor EXECUTOR = ( src, args ) -> {
         long timestamp = System.currentTimeMillis();
-        WildernessManager.getInstance().regenerate( timestamp );
+        AtherysTowns.getWildernessManager().regenerate( timestamp );
         return CommandResult.empty();
     };
 

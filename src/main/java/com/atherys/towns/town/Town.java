@@ -3,9 +3,6 @@ package com.atherys.towns.town;
 import com.atherys.core.views.Viewable;
 import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.base.AbstractAreaObject;
-import com.atherys.towns.managers.PlotManager;
-import com.atherys.towns.managers.ResidentManager;
-import com.atherys.towns.managers.TownManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.ranks.TownRanks;
@@ -63,8 +60,8 @@ public class Town extends AbstractAreaObject<Nation> implements Viewable<TownVie
         this.setParent( null );
         this.status = TownStatus.NONE;
         mayor.setTown( this, TownRanks.MAYOR );
-        TownManager.getInstance().add( this );
-        TownManager.getInstance().save( this );
+        AtherysTowns.getTownManager().add( this );
+        AtherysTowns.getTownManager().save( this );
     }
 
     public static Town create ( PlotDefinition definition, Resident mayor, String name, int maxAllowedPlots ) {
@@ -243,16 +240,16 @@ public class Town extends AbstractAreaObject<Nation> implements Viewable<TownVie
         getResidents().forEach( resident ->
                 resident.setTown( null, TownRanks.NONE )
         );
-        TownManager.getInstance().remove( this ); // remove town from town manager. Doing this remove any reference from the object, leaving it to to the whims of the GC
+        AtherysTowns.getTownManager().remove( this ); // remove town from town manager. Doing this remove any reference from the object, leaving it to to the whims of the GC
         TownMessage.warnAll( Text.of( "The town of " + this.name + " is no more." ) );
     }
 
     public List<Resident> getResidents () {
-        return ResidentManager.getInstance().getByTown( this );
+        return AtherysTowns.getResidentManager().getByTown( this );
     }
 
     public List<Plot> getPlots () {
-        return PlotManager.getInstance().getByParent( this );
+        return AtherysTowns.getPlotManager().getByParent( this );
     }
 
     public void showBorders ( Player p ) {

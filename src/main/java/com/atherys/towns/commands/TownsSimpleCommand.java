@@ -1,6 +1,6 @@
 package com.atherys.towns.commands;
 
-import com.atherys.towns.managers.ResidentManager;
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.resident.Resident;
 import com.atherys.towns.town.Town;
@@ -32,7 +32,7 @@ public abstract class TownsSimpleCommand implements CommandExecutor {
         @Nullable Town t = null;
         @Nullable Nation n = null;
 
-        Optional<Resident> resOpt = ResidentManager.getInstance().get( player.getUniqueId() );
+        Optional<Resident> resOpt = AtherysTowns.getResidentManager().get( player.getUniqueId() );
         if ( !resOpt.isPresent() ) {
             return CommandResult.empty();
         } else res = resOpt.get();

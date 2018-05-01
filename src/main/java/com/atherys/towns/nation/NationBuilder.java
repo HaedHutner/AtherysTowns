@@ -1,6 +1,6 @@
 package com.atherys.towns.nation;
 
-import com.atherys.towns.managers.NationManager;
+import com.atherys.towns.AtherysTowns;
 import org.spongepowered.api.text.format.TextColor;
 
 import java.util.UUID;
@@ -39,7 +39,7 @@ public class NationBuilder {
     }
 
     public Nation build () {
-        NationManager.getInstance().add( nation );
+        AtherysTowns.getNationManager().add( nation );
         return nation;
     }
 }

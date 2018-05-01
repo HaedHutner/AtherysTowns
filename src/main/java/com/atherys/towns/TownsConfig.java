@@ -1,6 +1,6 @@
 package com.atherys.towns;
 
-import com.atherys.core.database.mongo.MongoDatabaseConfig;
+import com.atherys.core.database.config.DatabaseConfig;
 import com.atherys.core.utils.PluginConfig;
 import com.atherys.towns.permissions.actions.NationAction;
 import com.atherys.towns.permissions.actions.NationActions;
@@ -240,7 +240,7 @@ public final class TownsConfig extends PluginConfig {
     }
 
     @Setting( "database" )
-    public MongoDatabaseConfig DATABASE = new MongoDatabaseConfig();
+    public DatabaseConfig DATABASE = new DatabaseConfig();
 
     @Setting( "wilderness_regen" )
     public WildernessConfig WILDERNESS_REGEN = new WildernessConfig();

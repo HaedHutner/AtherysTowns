@@ -2,7 +2,6 @@ package com.atherys.towns.commands.plot;
 
 import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.PlotManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.actions.TownActions;
@@ -32,7 +31,7 @@ public class PlotSetFlagCommand extends TownsSimpleCommand {
     @Override
     protected CommandResult execute ( Player player, CommandContext args, Resident resident, @Nullable Town town, @Nullable Nation nation ) {
 
-        Optional<Plot> plotOpt = PlotManager.getInstance().getByLocation( player.getLocation() );
+        Optional<Plot> plotOpt = AtherysTowns.getPlotManager().getByLocation( player.getLocation() );
         if ( !plotOpt.isPresent() ) {
             TownMessage.warn( player, "You must be standing within the borders of a town plot in order to do this command." );
             return CommandResult.empty();

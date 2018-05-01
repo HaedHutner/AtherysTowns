@@ -1,7 +1,7 @@
 package com.atherys.towns.commands.town.set;
 
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.ResidentManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.actions.TownActions;
@@ -38,7 +38,7 @@ public class TownSetRankCommand extends TownsSimpleCommand {
             return CommandResult.empty();
         }
 
-        Optional<Resident> targetResOpt = ResidentManager.getInstance().get( target.get().getUniqueId() );
+        Optional<Resident> targetResOpt = AtherysTowns.getResidentManager().get( target.get().getUniqueId() );
         if ( !targetResOpt.isPresent() ) {
             TownMessage.warn( player, "You must provide a valid resident." );
             return CommandResult.empty();

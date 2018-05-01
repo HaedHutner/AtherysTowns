@@ -4,7 +4,6 @@ import com.atherys.core.utils.UserUtils;
 import com.atherys.core.views.Viewable;
 import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.base.TownsObject;
-import com.atherys.towns.managers.NationManager;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.permissions.ranks.NationRank;
 import com.atherys.towns.permissions.ranks.NationRanks;
@@ -75,7 +74,7 @@ public class Resident implements TownsObject, Viewable<ResidentView> {
     }
 
     public Optional<Nation> getNation () {
-        return NationManager.getInstance().getByResident( this );
+        return AtherysTowns.getNationManager().getByResident( this );
     }
 
     public void setTown ( Town town, TownRank rank ) {

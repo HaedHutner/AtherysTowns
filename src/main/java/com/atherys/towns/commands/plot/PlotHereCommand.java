@@ -1,7 +1,7 @@
 package com.atherys.towns.commands.plot;
 
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.commands.TownsSimpleCommand;
-import com.atherys.towns.managers.PlotManager;
 import com.atherys.towns.messaging.TownMessage;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.plot.Plot;
@@ -26,7 +26,7 @@ public class PlotHereCommand extends TownsSimpleCommand {
 
     @Override
     protected CommandResult execute ( Player player, CommandContext args, Resident resident, @Nullable Town town, @Nullable Nation nation ) {
-        Optional<Plot> plot = PlotManager.getInstance().getByLocation( player.getLocation() );
+        Optional<Plot> plot = AtherysTowns.getPlotManager().getByLocation( player.getLocation() );
         if ( !plot.isPresent() ) {
             TownMessage.warn( player, "You are in the wilderness." );
             return CommandResult.empty();

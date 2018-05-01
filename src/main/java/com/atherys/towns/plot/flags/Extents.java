@@ -1,6 +1,6 @@
 package com.atherys.towns.plot.flags;
 
-import com.atherys.towns.managers.NationManager;
+import com.atherys.towns.AtherysTowns;
 import com.atherys.towns.nation.Nation;
 import com.atherys.towns.town.Town;
 
@@ -18,8 +18,8 @@ public final class Extents {
     } );
 
     public static final Extent NATION = new Extent( "nation", "Nation Only", ( res, flag, plot ) -> {
-        Optional<Nation> resNation = NationManager.getInstance().getByResident( res );
-        Optional<Nation> plotNation = NationManager.getInstance().getByPlot( plot );
+        Optional<Nation> resNation = AtherysTowns.getNationManager().getByResident( res );
+        Optional<Nation> plotNation = AtherysTowns.getNationManager().getByPlot( plot );
         // if resident has no nation, and the plot has a nation flag, then that means the resident's permission is indeterminate. Return false;
         // if plot has no nation, but has a nation flag, that means nobody who is part of a nation should have permission;
         if ( !resNation.isPresent() || !plotNation.isPresent() ) return false;
