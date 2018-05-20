@@ -1,7 +1,13 @@
 package com.atherys.towns.permissions.actions;
 
-public interface TownsAction {
+import com.atherys.towns.base.TownsObject;
 
-    String getPermission();
+public interface TownsAction<T extends TownsObject> {
+
+    String getTemplate();
+
+    default String getPermission(T root) {
+        return String.format(getTemplate(), root.getUUID().toString());
+    }
 
 }

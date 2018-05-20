@@ -23,12 +23,6 @@ import java.util.Optional;
 @Permission("atherystowns.town.leave")
 public class TownLeaveCommand extends TownsCommand {
 
-    private static TownLeaveCommand instance = new TownLeaveCommand();
-
-    public static TownLeaveCommand getInstance() {
-        return instance;
-    }
-
     public static void leaveTown(Resident resident) {
         Optional<Player> player = resident.getPlayer();
         if (!player.isPresent()) {
