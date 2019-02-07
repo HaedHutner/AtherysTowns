@@ -18,6 +18,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.channel.MessageReceiver;
 
 import java.util.Optional;
 
@@ -196,8 +197,8 @@ public class TownFacade {
         }
     }
 
-    private void sendTownInfo(Town town, Player player) {
-        player.sendMessage(Text.of("Oooooooooo ", town.getName(), " oooooooooO"));
+    public void sendTownInfo(Town town, MessageReceiver receiver) {
+        receiver.sendMessage(Text.of("Oooooooooo ", town.getName(), " oooooooooO"));
     }
 
     private boolean hasPlayerTown(Player player) {
