@@ -42,7 +42,7 @@ public class Town implements Identifiable<Long>, Subject<Nation,Long>, Actor<Lon
     @OneToOne
     private Resident leader;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "nation_id")
     private Nation nation;
 
@@ -51,10 +51,10 @@ public class Town implements Identifiable<Long>, Subject<Nation,Long>, Actor<Lon
     @Convert(converter = TransformConverter.class)
     private Transform<World> spawn;
 
-    @OneToMany(mappedBy = "town")
+    @OneToMany(mappedBy = "town", fetch = FetchType.EAGER)
     private Set<Resident> residents = new HashSet<>();
 
-    @OneToMany(mappedBy = "town")
+    @OneToMany(mappedBy = "town", fetch = FetchType.EAGER)
     private Set<Plot> plots = new HashSet<>();
 
     @Transient

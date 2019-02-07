@@ -19,7 +19,7 @@ public class Plot implements Identifiable<Long>, Subject<Town,Long> {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "town_id")
     private Town town;
 
