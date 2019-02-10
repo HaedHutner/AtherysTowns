@@ -11,16 +11,18 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.service.economy.EconomyService;
+import org.spongepowered.api.service.economy.Currency;
+import org.spongepowered.api.service.economy.account.UniqueAccount;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.action.ClickAction;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.channel.MessageReceiver;
-import org.spongepowered.api.text.format.TextStyles;
+import static org.spongepowered.api.text.format.TextStyles.*;
 
 import static org.spongepowered.api.text.format.TextColors.*;
 import static org.spongepowered.api.text.Text.NEW_LINE;
 
+import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Optional;
 
 @Singleton
@@ -66,16 +68,33 @@ public class ResidentFacade {
     }
 
     public void sendResidentInfo(Resident resident, MessageReceiver receiver) {
-        Text.Builder message = Text.builder().append(Text.of(TownsMessagingFacade.HEADER_FIRST, GOLD, resident.getName(), TownsMessagingFacade.HEADER_SECOND));
+        boolean isOnline = Sponge.getServer().getPlayer(resident.getId()).isPresent();
+        Text.Builder message = Text.builder().append(Text.of(TownsMessagingFacade.HEADER_FIRST, GOLD, resident.getName(), GREEN, " (",
+                isOnline ? "Online" : "Offline", ")", TownsMessagingFacade.HEADER_SECOND));
 
         AtherysCore.getEconomyService().ifPresent(economyService -> {
-            message.append(Text.of(NEW_LINE, DARK_GREEN, "Bank: ", economyService.getOrCreateAccount(resident.getId()).get().getBalance(economyService.getDefaultCurrency())));
+            Optional<UniqueAccount> account  = economyService.getOrCreateAccount(resident.getId());
+            if (account.isPresent()) {
+                Text.Builder currencies = Text.builder();
+                Map<Currency, BigDecimal> balances = account.get().getBalances();
+                int i = 0;
+                for(Map.Entry<Currency, BigDecimal> balance : balances.entrySet()) {
+                    currencies.append(Text.of(DARK_GREEN, balance.getKey().getPluralDisplayName(), ": ", GOLD, balance.getValue(),
+                            i == balances.size() ? NEW_LINE : ""));
+                    i++;
+                }
+
+                message.append(
+                    Text.of(NEW_LINE, DARK_GREEN, "Balance: "),
+                    Text.builder().append(Text.of(BOLD, GOLD, "View")).onHover(TextActions.showText(currencies.build())).build()
+                );
+            }
         });
 
         if (resident.getTown() != null) {
             message.append(Text.of(NEW_LINE, DARK_GREEN, "Town: ", Text.builder().onClick(TextActions.executeCallback(commandSource -> {
                 AtherysTowns.getInstance().getTownFacade().sendTownInfo(resident.getTown(), commandSource);
-            })).onHover(TextActions.showText(Text.of("View town"))).append(Text.of(GOLD, TextStyles.BOLD, resident.getTown().getName())).build()));
+            })).onHover(TextActions.showText(Text.of("View town"))).append(Text.of(GOLD, BOLD, resident.getTown().getName())).build()));
         }
 
         if (resident.getFriends().size() > 0) {
