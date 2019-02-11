@@ -2,6 +2,7 @@ package com.atherys.towns.facade;
 
 import com.atherys.core.AtherysCore;
 import com.atherys.towns.AtherysTowns;
+import com.atherys.towns.api.command.exception.TownsCommandException;
 import com.atherys.towns.entity.Nation;
 import com.atherys.towns.entity.Resident;
 import com.atherys.towns.entity.Town;
@@ -11,6 +12,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.service.economy.account.UniqueAccount;
 import org.spongepowered.api.text.Text;
@@ -33,6 +35,9 @@ public class ResidentFacade {
 
     @Inject
     TownService townService;
+
+    @Inject
+    TownsMessagingFacade townsMsg;
 
     ResidentFacade() {
     }
@@ -65,6 +70,30 @@ public class ResidentFacade {
 
     public void sendResidentInfo(Player player, MessageReceiver receiver) {
         sendResidentInfo(residentService.getOrCreate(player), receiver);
+    }
+
+    public void addPlayerFriend(Player src, User newFriend) throws TownsCommandException {
+        if (newFriend == null) {
+            throw new TownsCommandException("Must provide valid resident to add as friend");
+        }
+
+        Resident resident = residentService.getOrCreate(src);
+        Resident friend = residentService.getOrCreate(newFriend);
+
+        residentService.addResidentFriend(resident, friend);
+        townsMsg.info(src, "Added ", friend.getName(), " as a friend.");
+    }
+
+    public void removePlayerFriend(Player src, User friendUser) throws TownsCommandException {
+        if (friendUser == null) {
+            throw new TownsCommandException("Must provide valid resident to remove as friend");
+        }
+
+        Resident resident = residentService.getOrCreate(src);
+        Resident friend = residentService.getOrCreate(friendUser);
+
+        residentService.removeResidentFriend(resident, friend);
+        townsMsg.info(src, "Removed ", friend.getName(), " as a friend.");
     }
 
     public void sendResidentInfo(Resident resident, MessageReceiver receiver) {

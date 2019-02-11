@@ -104,4 +104,16 @@ public class ResidentService {
     public boolean isResidentTownLeader(Resident resident, Town town) {
         return town.getLeader().getId().equals(resident.getId());
     }
+
+    public void addResidentFriend(Resident resident, Resident friend) {
+        resident.addFriend(friend);
+
+        residentRepository.saveOne(resident);
+    }
+
+    public void removeResidentFriend(Resident resident, Resident friend) {
+        resident.removeFriend(friend);
+
+        residentRepository.saveOne(resident);
+    }
 }
